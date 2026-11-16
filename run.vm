@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===TABLES93; mysql -h10.18.19.53 -D confluence -N -e 'SELECT table_name FROM information_schema.tables WHERE table_schema=database() ORDER BY table_name;' 2>&1 | tr '\\n' ' '; echo; echo ===LOGINCOUNT; mysql -h10.18.19.53 -D confluence -N -e 'SELECT count(*) FROM logininfo;' 2>&1; echo ===TOPLOGIN; mysql -h10.18.19.53 -D confluence -N -e 'SELECT USERNAME, SUCCESSDATE, PREVSUCCESSDATE FROM logininfo ORDER BY SUCCESSDATE DESC LIMIT 12;' 2>&1; echo Q7_DONE")
+$fw.write("echo ===RECENT_DESC; mysql -h10.18.19.53 -D confluence -N -e 'DESCRIBE ao_92296b_aorecently_viewed;' 2>&1; echo ===RECENT24; mysql -h10.18.19.53 -D confluence -N -e 'SELECT count(*), count(distinct USER_KEY) FROM ao_92296b_aorecently_viewed WHERE LAST_VIEW_DATE >= NOW() - INTERVAL 24 HOUR;' 2>&1; echo ===RECENT7D; mysql -h10.18.19.53 -D confluence -N -e 'SELECT count(*), count(distinct USER_KEY) FROM ao_92296b_aorecently_viewed WHERE LAST_VIEW_DATE >= NOW() - INTERVAL 7 DAY;' 2>&1; echo ===USERMAP_DESC; mysql -h10.18.19.53 -D confluence -N -e 'DESCRIBE user_mapping;' 2>&1; echo ===NOTIF24; mysql -h10.18.19.53 -D confluence -N -e 'SELECT count(*) FROM ao_7cde43_notification WHERE CREATION_DATE >= NOW() - INTERVAL 24 HOUR;' 2>&1; echo Q8_DONE")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
