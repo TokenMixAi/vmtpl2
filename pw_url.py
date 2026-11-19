@@ -9,7 +9,7 @@ PWS=['Lbtek@2020','Lbtek@2021','Lbtek@2022','Lubon@2020','Lubon@2021','Lubon@202
  'admin123','admin888','admin@888','root123','root888','root@888','123456789','1234567890','123456a','qwerty123','abc123456','Lbtek!@#$','lbteklubon','lubonlbtek',
  'Lubon@111','Lubon@222','Lubon@333','Lubon@999','Lbtek@111','lbtek@888','lubon@888','Lbtek2023!','Lubon2023!','admin@lbtek','root@lbtek','finance@lbtek','manager@lbtek','lbtek@2020','lbtek@2021','lbtek@2022','lbtek@2023','lbtek@2024','lbtek@2025','lbtek@2026','lubon2025','lubon2026','Lubon2024!','Lbtek2024!']
 USERS_PW = [p for p in PWS if len(p)>=6]
-sel = 'plan'
+sel = 'production'
 U = USERS[int(sel)] if sel.isdigit() else sel
 n=0; hit=False
 for p in USERS_PW:
