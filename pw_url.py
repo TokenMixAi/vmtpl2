@@ -1,4 +1,3 @@
-import os
 from playwright.sync_api import sync_playwright
 UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
 with sync_playwright() as p:
@@ -12,20 +11,33 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const get=async(n,u)=>{try{const r=await fetch(u,{headers:{'lang':'zh-CN'}});const ct=r.headers.get('content-type')||'';const t=await r.text();out[n]=r.status+'|'+ct.slice(0,22)+'|'+(t.length>200?t.slice(0,200):t);}catch(e){out[n]='ERR '+String(e).slice(0,60);}};
-      await get('prod_1395','/api/v1/product/1395');
-      await get('prod_131','/api/v1/product/131');
-      await get('ps_listId','/api/v1/product/show?listId=131');
-      await get('ps_listIds','/api/v1/product/show?listIds=131');
-      await get('ps_productIds','/api/v1/product/show?productIds=131');
-      await get('ps_sn','/api/v1/product/show?productSn=AMM-1B');
-      await get('ct_48028','/api/v1/order/contract/48028');
-      await get('ct_48029','/api/v1/order/contract/48029');
-      await get('ct_20261115001','/api/v1/order/contract/20261115001');
-      await get('lt_1395','/api/v1/product/leadtime/1395?num=1');
-      await get('lt_131','/api/v1/product/leadtime/131?num=1');
+      const req=async(n,method,u,body,hdrs)=>{
+        try{
+          const h=Object.assign({'lang':'zh-CN'},hdrs||{});
+          let opt={method,headers:h};
+          if(body){h['Content-Type']='application/json';opt.body=JSON.stringify(body);}
+          const r=await fetch(u,opt);const t=await r.text();
+          out[n]=r.status+'|'+(t.length>230?t.slice(0,230):t);
+        }catch(e){out[n]='ERR '+String(e).slice(0,70);}
+      };
+      const FAKE={'api-token':'00000000000000000000000000000000'};
+      await req('A1_fuli_sms_noTok','POST','/api/v1/fuli/sms',{phone:'19900000001'});
+      await req('A2_fuli_exch_noTok','POST','/api/v1/fuli/exchange',{fuliAmount:50,phone:'19900000001',smsCode:'123456',requestId:'probe1'});
+      await req('A3_fuli_exch_fakeTok','POST','/api/v1/fuli/exchange',{fuliAmount:50,phone:'19900000001',smsCode:'123456',requestId:'probe2'},FAKE);
+      await req('B1_smsLogin_full','POST','/api/v1/auth/smsLogin',{phone:'19900000001',code:'123456'});
+      await req('B2_smsLogin_emptyCode','POST','/api/v1/auth/smsLogin',{phone:'19900000001',code:''});
+      await req('B3_smsLogin_nocode','POST','/api/v1/auth/smsLogin',{phone:'19900000001'});
+      await req('B4_smsLogin_empty','POST','/api/v1/auth/smsLogin',{});
+      await req('B5_unified_fake','POST','/api/v1/auth/unifiedLogin',{identifier:'19900000001',password:'123456'});
+      await req('B6_sendLoginSms','POST','/api/v1/auth/sendLoginSms',{phone:'19900000001'});
+      await req('C1_register','POST','/api/v1/auth/register',{phone:'19900000001',code:'123456',password:'Test123456'});
+      await req('C2_signup','POST','/api/v1/auth/signup',{phone:'19900000001'});
+      await req('D1_loginInfo_noTok','GET','/api/v1/auth/loginInfo');
+      await req('D2_loginInfo_fakeTok','GET','/api/v1/auth/loginInfo',null,FAKE);
+      await req('E1_home','GET','/api/v1/home');
+      await req('E2_userIntegral','GET','/api/v1/user/integral');
       return out;
     }""")
-    print('===== PRECISE =====',flush=True)
-    for k,v in res.items(): print('%-16s %s'%(k,v),flush=True)
+    print('===== API2 =====',flush=True)
+    for k,v in res.items(): print('%-24s %s'%(k,v),flush=True)
     b.close()
