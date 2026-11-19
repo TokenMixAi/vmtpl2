@@ -13,22 +13,19 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const call=async(n,u,m,bd)=>{try{const o={method:m,headers:{'Content-Type':'application/json','lang':'zh-CN'}};if(bd!==null)o.body=JSON.stringify(bd);const r=await fetch(u,o);const ct=r.headers.get('content-type')||'';const t=await r.text();out[n]=r.status+'|'+ct.slice(0,20)+'|'+(t.length>180?t.slice(0,180):t);}catch(e){out[n]='ERR '+String(e).slice(0,80);}};
-      await call('c_empty','/api/v1/order/contract/','POST',{});
-      await call('c_id','/api/v1/order/contract/','POST',{id:1});
-      await call('c_orderId','/api/v1/order/contract/','POST',{orderId:1});
-      await call('c_orderSn','/api/v1/order/contract/','POST',{orderSn:'20250101001'});
-      await call('c_ids','/api/v1/order/contract/','POST',{orderIds:[1]});
-      await call('c_get','/api/v1/order/contract/1','GET',null);
-      await call('leadtime','/api/v1/product/leadtime/1','GET',null);
-      await call('prod_id','/api/v1/product/1','GET',null);
-      await call('prod_show_id','/api/v1/product/show?id=1','GET',null);
-      await call('quote_get','/api/v1/order/quote/1','POST',{});
-      await call('dl_options','/api/v1/order/downloadOptions/1','GET',null);
-      await call('fb_types','/api/v1/feedback/types','GET',null);
-      await call('fb_hist','/api/v1/feedback','GET',null);
+      const call=async(n,u,m,bd)=>{try{const o={method:m,headers:{'Content-Type':'application/json','lang':'zh-CN'}};if(bd!==null)o.body=JSON.stringify(bd);const r=await fetch(u,o);const ct=r.headers.get('content-type')||'';const t=await r.text();out[n]=r.status+'|'+ct.slice(0,24)+'|'+(t.length>220?t.slice(0,220):t);}catch(e){out[n]='ERR '+String(e).slice(0,80);}};
+      await call('prod_9376','/api/v1/product/9376','GET',null);
+      await call('prod_1785','/api/v1/product/1785','GET',null);
+      await call('prod_show_9376','/api/v1/product/show?productId=9376','GET',null);
+      await call('prod_show_id2','/api/v1/product/show?id=9376','GET',null);
+      await call('contract_1','/api/v1/order/contract/1','GET',null);
+      await call('contract_2','/api/v1/order/contract/2','GET',null);
+      await call('contract_3','/api/v1/order/contract/3','GET',null);
+      await call('contract_pdf','/api/v1/order/contract/1.pdf','GET',null);
+      await call('lead_9376','/api/v1/product/leadtime/9376?num=1','GET',null);
+      await call('lead_9376b','/api/v1/product/leadtime/9376?quantity=1','GET',null);
       return out;
     }""")
-    print('===== CONTRACT =====',flush=True)
-    for k,v in res.items(): print('%-14s %s'%(k,v),flush=True)
+    print('===== IDOR =====',flush=True)
+    for k,v in res.items(): print('%-16s %s'%(k,v),flush=True)
     b.close()
