@@ -1,42 +1,40 @@
-import json, re, os, sys
+import json, os, sys
 from playwright.sync_api import sync_playwright
-URLS=[u.strip() for u in os.environ.get('PROBE_URL','').split(',') if u.strip()]
-if not URLS:
-    print('NO_PROBE_URL'); sys.exit(1)
+U=os.environ.get('PROBE_URL','https://m.lbtek.com/points-mall')
 UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
-reqs=[]; console=[]
 with sync_playwright() as p:
     b=p.chromium.launch(headless=False, args=['--disable-blink-features=AutomationControlled','--no-sandbox','--disable-dev-shm-usage'])
-    ctx=b.new_context(user_agent=UA, viewport={'width':1366,'height':768}, locale='zh-CN', timezone_id='Asia/Shanghai', java_script_enabled=True)
+    ctx=b.new_context(user_agent=UA, viewport={'width':1366,'height':768}, locale='zh-CN', timezone_id='Asia/Shanghai')
     ctx.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>undefined});window.chrome={runtime:{}};")
     page=ctx.new_page()
-    page.on("request", lambda r: reqs.append((r.method, r.url, r.resource_type)))
-    page.on("console", lambda m: console.append(m.text[:200]))
-    for U in URLS:
-        print('\n===== VISIT =====', flush=True)
-        try:
-            resp=page.goto(U, wait_until='domcontentloaded', timeout=60000)
-            print('goto status=%s'%(resp.status if resp else None), flush=True)
-            for i in range(15):
-                page.wait_for_timeout(2000)
-                try: page.mouse.move(200+i*13,200+i*7)
-                except: pass
-                html=page.content()
-                if 'arg1=' not in html and 'acw_sc__v2' not in html and 'renderData' not in html: break
-            html=page.content()
-            print('len=%d title=%s'%(len(html), page.title()), flush=True)
-            print('--- NUXT REFS ---')
-            for m in sorted(set(re.findall(r'/_nuxt/[A-Za-z0-9._~-]+\.(?:js|mjs|css|json)', html))): print('  ',m)
-            print('--- API REFS in HTML ---')
-            for m in sorted(set(re.findall(r'["\x27](/[a-zA-Z][a-zA-Z0-9_/-]*(?:api|Api)[a-zA-Z0-9_/-]*)["\x27]', html)))[:20]: print('  ',m)
-            txt=page.evaluate("()=>document.body?document.body.innerText.slice(0,600):''")
-            print('--- TEXT ---'); print(txt.replace('\n',' | ')[:600])
-        except Exception as e: print('FATAL', str(e)[:300], flush=True)
-    print('\n===== INTERESTING REQUESTS =====', flush=True)
-    seen=set()
-    for m,u,t in reqs:
-        if ('/_nuxt/' in u or '/api/' in u or '/mallApi/' in u) and u not in seen:
-            seen.add(u); print('  %-6s %-12s %s'%(m,t,u[:220]), flush=True)
-    print('\n===== COOKIES =====', flush=True)
-    print(json.dumps([(c['name'],c['value'][:40]) for c in ctx.cookies()]))
+    page.goto(U, wait_until='domcontentloaded', timeout=60000)
+    for i in range(12):
+        page.wait_for_timeout(2000)
+        html=page.content()
+        if 'arg1=' not in html and 'renderData' not in html: break
+    print('page title=',page.title(),'len=',len(page.content()), flush=True)
+    res=page.evaluate("""async () => {
+      const out={};
+      const calls=[
+        ['loginInfo','/api/v1/auth/loginInfo','GET',null],
+        ['tokenTtl','/api/v1/auth/tokenTtl','GET',null],
+        ['unifiedLogin','/api/v1/auth/unifiedLogin','POST',{}],
+        ['smsLogin','/api/v1/auth/smsLogin','POST',{}],
+        ['sendLoginSms','/api/v1/auth/sendLoginSms','POST',{}],
+        ['fuliSms','/api/v1/fuli/sms','POST',{phone:'19999999999'}],
+        ['fuliExchange','/api/v1/fuli/exchange','POST',{fuliAmount:50,phone:'19999999999',smsCode:'000000',requestId:'probe9137'}],
+        ['home','/api/v1/home','GET',null],
+        ['category','/api/v1/category','GET',null],
+        ['clickCap','/api/v1/captcha/click','POST',{}],
+      ];
+      for(const [n,u,m,bd] of calls){
+        try{
+          const r=await fetch(u,{method:m,headers:{'Content-Type':'application/json','lang':'zh-CN','api-token':''},body:bd===null?undefined:JSON.stringify(bd)});
+          out[n]=r.status+'|'+(await r.text()).slice(0,400);
+        }catch(e){out[n]='ERR '+String(e).slice(0,120);}
+      }
+      return out;
+    }""")
+    print('\n===== API RESULTS =====', flush=True)
+    for k,v in res.items(): print('%-14s %s'%(k,v), flush=True)
     b.close()
